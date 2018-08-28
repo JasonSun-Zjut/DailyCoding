@@ -50,6 +50,7 @@ public class Server {
                     socketChannel.configureBlocking(false);
                     socketChannel.register(selector, SelectionKey.OP_READ);
                 } else if (selectionKey.isReadable()) {
+                      selectionKey.cancel();
                     new Thread(new ReadableTask(selectionKey)).start();
                 }
             }
