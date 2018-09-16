@@ -1,52 +1,52 @@
-ï»¿# åŸºäºReentranlockçš„AQSåˆ†æ
+# »ùÓÚReentranlockµÄAQS·ÖÎö
 
-- **AbstractQueuedSynchronizerçš„æ•´ä½“åˆ†æ**
-- **Reentranlockä¸­å¯¹AQSçš„å®ç°**
-- **å¯¹Lock()çš„åˆ†æ**
-- **å¯¹UnLock()çš„åˆ†æ**
+- **AbstractQueuedSynchronizerµÄÕûÌå·ÖÎö**
+- **ReentranlockÖĞ¶ÔAQSµÄÊµÏÖ**
+- **¶ÔLock()µÄ·ÖÎö**
+- **¶ÔUnLock()µÄ·ÖÎö**
 
 -------------------
-#####AbstractQueuedSynchronizerçš„æ•´ä½“åˆ†æ
+####AbstractQueuedSynchronizerµÄÕûÌå·ÖÎö
 
- 1. AQSå†…éƒ¨å«æœ‰ä¸€ä¸ªNodeç±»ï¼Œæ­£æ˜¯ç”±è¿™ä¸ªNodeæ„æˆäº†åŒæ­¥é˜Ÿåˆ—ï¼Œå®˜æ–¹æ³¨é‡Šå¯¹åŒæ­¥é˜Ÿåˆ—çš„å½¢è±¡æè¿°ã€‚    +------+  prev
+ 1. AQSÄÚ²¿º¬ÓĞÒ»¸öNodeÀà£¬ÕıÊÇÓÉÕâ¸öNode¹¹³ÉÁËÍ¬²½¶ÓÁĞ£¬¹Ù·½×¢ÊÍ¶ÔÍ¬²½¶ÓÁĞµÄĞÎÏóÃèÊö¡£    +------+  prev
     +-----+       +-----+  head |      | <---- |     | <---- |     |  tail    +------+       +-----+       +-----+
-![AQSçš„ä¸€ä¸ªå†…éƒ¨ç±»Node](https://img-blog.csdn.net/20180824230735590?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjQxMTQ2Mw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
- 2. **AQSæä¾›äº†5ä¸ªä¾›å­ç±»é‡å†™çš„æ–¹æ³•ï¼Œé’ˆå¯¹å…±äº«é”å’Œç‹¬å é”çš„å®ç°**
+![AQSµÄÒ»¸öÄÚ²¿ÀàNode](https://github.com/Jason194113/JavaSeLearn/blob/master/Screenshots/Node.JPG)
+ 2. **AQSÌá¹©ÁË5¸ö¹©×ÓÀàÖØĞ´µÄ·½·¨£¬Õë¶Ô¹²ÏíËøºÍ¶ÀÕ¼ËøµÄÊµÏÖ**
        tryAcquire(int arg)
        tryAcquireShared(int arg)
        tryRelease(int arg)
        tryReleaseShared(int arg)
        isHeldExclusively()
       
- 3. **AQSä¸­çš„æ¨¡æ¿æ–¹æ³•**
-     **è¿™äº›æ¨¡æ¿æ–¹æ³•å°†ä¼šè°ƒç”¨æŒ‡å®šçš„ç”±å­ç±»è¿›è¡Œé‡å†™çš„æ–¹æ³•ã€‚**
+ 3. **AQSÖĞµÄÄ£°å·½·¨**
+     **ÕâĞ©Ä£°å·½·¨½«»áµ÷ÓÃÖ¸¶¨µÄÓÉ×ÓÀà½øĞĞÖØĞ´µÄ·½·¨¡£**
      acquire(int arg)
      acquireInterruptibly(int arg)
-     å°†è°ƒç”¨é‡å†™çš„tryAcquire(int args)
+     ½«µ÷ÓÃÖØĞ´µÄtryAcquire(int args)
      
      acquireShared(int arg)
      acquireSharedInterruptibly(int arg)
-     è°ƒç”¨é‡å†™çš„tryAcquireShared(int args)
+     µ÷ÓÃÖØĞ´µÄtryAcquireShared(int args)
     
      releaseShared(int arg)
-     è°ƒç”¨é‡å†™çš„tryReleaseShared(int arg)
+     µ÷ÓÃÖØĞ´µÄtryReleaseShared(int arg)
      release(int arg)
-     è°ƒç”¨é‡å†™çš„tryRelease(int arg)
+     µ÷ÓÃÖØĞ´µÄtryRelease(int arg)
      
  4. state
-   stateä½œä¸ºåŒæ­¥å˜é‡ï¼Œå­ç±»å¯¹åŒæ­¥å˜é‡æœ‰ä¸åŒçš„å®ç°æ–¹å¼
+   state×÷ÎªÍ¬²½±äÁ¿£¬×ÓÀà¶ÔÍ¬²½±äÁ¿ÓĞ²»Í¬µÄÊµÏÖ·½Ê½
 
 
   
 -------------------
-####Reentranlockä¸­å¯¹AQSçš„å®ç°
-ç”±äºæ˜¯åŸºäºReentranlockçš„éå…¬å¹³é”çš„AQSåˆ†æï¼Œæ‰€ä»¥é¦–å…ˆæ¥çœ‹çœ‹Reentranlockæ˜¯å¦‚ä½•åŸºäºAQSè¿›è¡Œæ„é€ çš„ã€‚
+#### ReentranlockÖĞ¶ÔAQSµÄÊµÏÖ
+ÓÉÓÚÊÇ»ùÓÚReentranlockµÄ·Ç¹«Æ½ËøµÄAQS·ÖÎö£¬ËùÒÔÊ×ÏÈÀ´¿´¿´ReentranlockÊÇÈçºÎ»ùÓÚAQS½øĞĞ¹¹ÔìµÄ¡£
 
  **1. Syc**
-    **Sycä½œä¸ºReentranlockçš„å†…éƒ¨ç±»å®ç°äº†ç»§æ‰¿äº†AQSï¼Œå¹¶é‡å†™äº†         tryReleaseå’ŒtryAcquireæ–¹æ³•ï¼ŒåŒæ—¶å®šä¹‰äº†lock()æŠ½è±¡æ–¹æ³•ï¼Œä¾›å­ç±»çš„å…·ä½“æƒ…å†µå»å®ç°**
+    **Syc×÷ÎªReentranlockµÄÄÚ²¿ÀàÊµÏÖÁË¼Ì³ĞÁËAQS£¬²¢ÖØĞ´ÁË         tryReleaseºÍtryAcquire·½·¨£¬Í¬Ê±¶¨ÒåÁËlock()³éÏó·½·¨£¬¹©×ÓÀàµÄ¾ßÌåÇé¿öÈ¥ÊµÏÖ**
     
     `protected final boolean tryRelease(int releases) {
-            int c = getState() - releases;  /**Reentranlockä½¿ç”¨state0å’Œ1æ¥åˆ†åˆ«ä»£è¡¨å½“å‰é”æ˜¯å¦è¢«å æœ‰*/
+            int c = getState() - releases;  /**ReentranlockÊ¹ÓÃstate0ºÍ1À´·Ö±ğ´ú±íµ±Ç°ËøÊÇ·ñ±»Õ¼ÓĞ*/
             if (Thread.currentThread() != getExclusiveOwnerThread())
                 throw new IllegalMonitorStateException();
             boolean free = false;
@@ -62,35 +62,35 @@
         }` 
         
  2. NonfairSync
-     NonfairSyncç»§æ‰¿äº†Syncï¼Œä»ç±»åçš„å®šä¹‰å°±èƒ½æ˜ç™½è¿™æ˜¯éå…¬å¹³é”çš„å®ç°ï¼ŒNonfairSyncé‡å†™äº†AQSä¸­çš„tryAcquireæ–¹æ³•å’ŒSyncä¸­çš„lock()æ–¹æ³•ã€‚
+     NonfairSync¼Ì³ĞÁËSync£¬´ÓÀàÃûµÄ¶¨Òå¾ÍÄÜÃ÷°×ÕâÊÇ·Ç¹«Æ½ËøµÄÊµÏÖ£¬NonfairSyncÖØĞ´ÁËAQSÖĞµÄtryAcquire·½·¨ºÍSyncÖĞµÄlock()·½·¨¡£
  
 ```
          final void lock() {
-        /** ä¹‹å‰æåˆ°äº†Stateå˜é‡ä»£è¡¨å½“å‰é”çš„å æœ‰æƒ…å†µ
-            è¿™é‡Œä½¿ç”¨CASæ“ä½œå°è¯•è·å–é”*/
+        /** Ö®Ç°Ìáµ½ÁËState±äÁ¿´ú±íµ±Ç°ËøµÄÕ¼ÓĞÇé¿ö
+            ÕâÀïÊ¹ÓÃCAS²Ù×÷³¢ÊÔ»ñÈ¡Ëø*/
               setExclusiveOwnerThread(Thread.currentThread());
-              /**è·å–æˆåŠŸåˆ™æŠŠé”çš„å æœ‰çº¿ç¨‹æ›´æ”¹ä¸ºå½“å‰çº¿ç¨‹*/
+              /**»ñÈ¡³É¹¦Ôò°ÑËøµÄÕ¼ÓĞÏß³Ì¸ü¸ÄÎªµ±Ç°Ïß³Ì*/
             else
                 acquire(1);
-                /**è°ƒç”¨AQSä¸­çš„acquireæ–¹æ³•*/
+                /**µ÷ÓÃAQSÖĞµÄacquire·½·¨*/
         }
 
         protected final boolean tryAcquire(int acquires) {
             return nonfairTryAcquire(acquires);
-            /**è°ƒç”¨äº†Syncä¸­çš„å®šä¹‰çš„nonfairTryAcquireæ–¹æ³•*/
+            /**µ÷ÓÃÁËSyncÖĞµÄ¶¨ÒåµÄnonfairTryAcquire·½·¨*/
         }  
 ```
 
 
 -------------------
-## Lock()åˆ†æ
-**ä¹‹å‰åˆ†æåˆ°ï¼Œéå…¬å¹³é”çš„lock()å®ç°ä¸ºåˆ©ç”¨CASå°è¯•è·å–é”ï¼ŒæˆåŠŸåˆ™å æœ‰é”ï¼Œå¤±è´¥åˆ™æ‰§è¡ŒAQSä¸­å®šä¹‰çš„acquire()æ–¹æ³•.**
+## Lock()·ÖÎö
+**Ö®Ç°·ÖÎöµ½£¬·Ç¹«Æ½ËøµÄlock()ÊµÏÖÎªÀûÓÃCAS³¢ÊÔ»ñÈ¡Ëø£¬³É¹¦ÔòÕ¼ÓĞËø£¬Ê§°ÜÔòÖ´ĞĞAQSÖĞ¶¨ÒåµÄacquire()·½·¨.**
 
  **- acquire()**
 `
  public final void acquire(int arg) {  /**arg=1*/
         if (!tryAcquire(arg) &&   
-        /**ä¹‹å‰æåˆ°è¿‡acquireä¸ºæ¨¡æ¿æ–¹æ³•ï¼Œè¿™é‡Œä¾¿æ˜¯æ‰§è¡Œå­ç±»é‡å†™çš„tryacquire()æ–¹æ³•,å­ç±»çš„å…·ä½“å®ç°ä¸ºSyncç±»ä¸­çš„nonfairTryAcquireæ–¹æ³•*/
+        /**Ö®Ç°Ìáµ½¹ıacquireÎªÄ£°å·½·¨£¬ÕâÀï±ãÊÇÖ´ĞĞ×ÓÀàÖØĞ´µÄtryacquire()·½·¨,×ÓÀàµÄ¾ßÌåÊµÏÖÎªSyncÀàÖĞµÄnonfairTryAcquire·½·¨*/
             acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
             selfInterrupt();
     }
@@ -99,15 +99,15 @@
 ```
 final boolean nonfairTryAcquire(int acquires) {
             final Thread current = Thread.currentThread();
-            int c = getState();/**å¾—åˆ°åŒæ­¥å˜é‡çš„å€¼*/
-            if (c == 0) {/**å¦‚æœæ˜¯0ï¼Œè¡¨ç¤ºå½“å‰æ²¡æœ‰çº¿ç¨‹å æœ‰é”*/
+            int c = getState();/**µÃµ½Í¬²½±äÁ¿µÄÖµ*/
+            if (c == 0) {/**Èç¹ûÊÇ0£¬±íÊ¾µ±Ç°Ã»ÓĞÏß³ÌÕ¼ÓĞËø*/
                 if (compareAndSetState(0, acquires)) {
                     setExclusiveOwnerThread(current);
                     return true;
-                  /**åˆ©ç”¨CASå°è¯•è·å–é”ï¼ŒæˆåŠŸåˆ™è¿”å›true*/
+                  /**ÀûÓÃCAS³¢ÊÔ»ñÈ¡Ëø£¬³É¹¦Ôò·µ»Øtrue*/
                 }
             }
-            /**å¯¹é‡å¤è·å–é”çš„åˆ¤æ–­*/
+            /**¶ÔÖØ¸´»ñÈ¡ËøµÄÅĞ¶Ï*/
             else if (current == getExclusiveOwnerThread()) {
                 int nextc = c + acquires;
                 if (nextc < 0) // overflow
@@ -124,7 +124,7 @@ final boolean nonfairTryAcquire(int acquires) {
 
 ```
     private Node addWaiter(Node mode) {
-    //å°†å½“å‰çº¿ç¨‹åŒ…è£…æˆä¸€ä¸ªNodeèŠ‚ç‚¹ï¼ŒNodeä¸­ç»´æŠ¤äº†ä¸€ä¸ªwaitstatuså˜é‡
+    //½«µ±Ç°Ïß³Ì°ü×°³ÉÒ»¸öNode½Úµã£¬NodeÖĞÎ¬»¤ÁËÒ»¸öwaitstatus±äÁ¿
         Node node = new Node(Thread.currentThread(), mode);
         // Try the fast path of enq; backup to full enq on failure
         Node pred = tail;
@@ -135,7 +135,7 @@ final boolean nonfairTryAcquire(int acquires) {
                 return node;
             }
         }
-        //åˆå§‹åŒ–åŒæ­¥é˜Ÿåˆ—
+        //³õÊ¼»¯Í¬²½¶ÓÁĞ
         enq(node);
         return node;
     }
@@ -145,11 +145,11 @@ final boolean nonfairTryAcquire(int acquires) {
         for (;;) {
             Node t = tail;
             if (t == null) { // Must initialize
-                //æ„é€ äº†ä¸€ä¸ªå¤´èŠ‚ç‚¹
+                //¹¹ÔìÁËÒ»¸öÍ·½Úµã
                 if (compareAndSetHead(new Node()))
                     tail = head;
             } else {
-                  //å°†å½“å‰çº¿ç¨‹çš„èŠ‚ç‚¹å°¾æ’å…¥åˆ°åŒæ­¥é˜Ÿåˆ—
+                  //½«µ±Ç°Ïß³ÌµÄ½ÚµãÎ²²åÈëµ½Í¬²½¶ÓÁĞ
                 node.prev = t;
                 if (compareAndSetTail(t, node)) {
                     t.next = node;
@@ -161,7 +161,7 @@ final boolean nonfairTryAcquire(int acquires) {
 ```
 
  **-acquireQueued()**
-   **è¿™ä¸ªæ–¹æ³•æ˜¯AQSä¸­é‡è¦çš„æ–¹æ³•ï¼Œæè¿°äº†èŠ‚ç‚¹è¿›å…¥åŒæ­¥é˜Ÿåˆ—åçš„ä¸€ç³»åˆ—æ“ä½œ**
+   **Õâ¸ö·½·¨ÊÇAQSÖĞÖØÒªµÄ·½·¨£¬ÃèÊöÁË½Úµã½øÈëÍ¬²½¶ÓÁĞºóµÄÒ»ÏµÁĞ²Ù×÷**
    
 
 ```
@@ -170,17 +170,17 @@ final boolean nonfairTryAcquire(int acquires) {
         try {
             boolean interrupted = false;
             for (;;) {
-            //è·å¾—åˆšæ’å…¥çš„å‰ç»§èŠ‚ç‚¹
+            //»ñµÃ¸Õ²åÈëµÄÇ°¼Ì½Úµã
                 final Node p = node.predecessor();
-                //1.å¦‚æœå‰ç»§èŠ‚ç‚¹æ˜¯headï¼Œé‚£ä¹ˆå°±å°è¯•å†æ¬¡è·å–é”
-                //2.å¦‚æœå‰ç»§èŠ‚ç‚¹ä¸æ˜¯headï¼Œæˆ–è€…å°è¯•è·å–é”å¤±è´¥ 
+                //1.Èç¹ûÇ°¼Ì½ÚµãÊÇhead£¬ÄÇÃ´¾Í³¢ÊÔÔÙ´Î»ñÈ¡Ëø
+                //2.Èç¹ûÇ°¼Ì½Úµã²»ÊÇhead£¬»òÕß³¢ÊÔ»ñÈ¡ËøÊ§°Ü 
                 if (p == head && tryAcquire(arg)) {
                     setHead(node);
                     p.next = null; // help GC
                     failed = false;
                     return interrupted;
                 }
-                //åˆ¤æ–­åœ¨è·å–é”å¤±è´¥ä»¥åï¼Œèƒ½å¦è¿›å…¥é˜»å¡
+                //ÅĞ¶ÏÔÚ»ñÈ¡ËøÊ§°ÜÒÔºó£¬ÄÜ·ñ½øÈë×èÈû
                 if (shouldParkAfterFailedAcquire(p, node) &&
                     parkAndCheckInterrupt())
                     interrupted = true;
@@ -192,7 +192,7 @@ final boolean nonfairTryAcquire(int acquires) {
     }
 
    private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
-        //è·å¾—å‰ç»§èŠ‚ç‚¹çš„ç­‰å¾…çŠ¶æ€ï¼ŒèŠ‚ç‚¹é»˜è®¤çš„waitstatusä¸º0
+        //»ñµÃÇ°¼Ì½ÚµãµÄµÈ´ı×´Ì¬£¬½ÚµãÄ¬ÈÏµÄwaitstatusÎª0
         int ws = pred.waitStatus;
         if (ws == Node.SIGNAL)
            
@@ -205,39 +205,39 @@ final boolean nonfairTryAcquire(int acquires) {
             pred.next = node;
         } else {
           
-             //åˆ©ç”¨CASæ“ä½œå°†å‰ç»§èŠ‚ç‚¹çš„waitstatusæ›´æ”¹ä¸ºSIGNAL
+             //ÀûÓÃCAS²Ù×÷½«Ç°¼Ì½ÚµãµÄwaitstatus¸ü¸ÄÎªSIGNAL
             compareAndSetWaitStatus(pred, ws, Node.SIGNAL);
         }
-        //åœ¨å°†å‰ç»§èŠ‚ç‚¹çš„waitstatusè®¾ç½®ä¸ºSIGNALåï¼Œ
-        //èŠ‚ç‚¹ä¼šå†å¾ªç¯ä¸€æ¬¡ï¼Œåˆ¤æ–­èƒ½å¦è·å–é”
+        //ÔÚ½«Ç°¼Ì½ÚµãµÄwaitstatusÉèÖÃÎªSIGNALºó£¬
+        //½Úµã»áÔÙÑ­»·Ò»´Î£¬ÅĞ¶ÏÄÜ·ñ»ñÈ¡Ëø
         return false;
     }
 ```
 
-**åœ¨å°†å‰ç»§èŠ‚ç‚¹çš„waitstatusè®¾ç½®ä¸ºSIGNALåï¼Œè¡¨æ˜å‰ç»§èŠ‚ç‚¹ä¼šåœ¨é‡Šæ”¾é”ä¹‹åå”¤é†’åç»§èŠ‚ç‚¹ï¼Œé‚£ä¹ˆå½“å‰èŠ‚ç‚¹å°±å¯ä»¥å®‰å¿ƒçš„è¿›å…¥é˜»å¡çŠ¶æ€ï¼Œç­‰å¾…å‰ç»§èŠ‚ç‚¹çš„å”¤é†’ã€‚**
+**ÔÚ½«Ç°¼Ì½ÚµãµÄwaitstatusÉèÖÃÎªSIGNALºó£¬±íÃ÷Ç°¼Ì½Úµã»áÔÚÊÍ·ÅËøÖ®ºó»½ĞÑºó¼Ì½Úµã£¬ÄÇÃ´µ±Ç°½Úµã¾Í¿ÉÒÔ°²ĞÄµÄ½øÈë×èÈû×´Ì¬£¬µÈ´ıÇ°¼Ì½ÚµãµÄ»½ĞÑ¡£**
 
 ```
 private final boolean parkAndCheckInterrupt() {
-         //åˆ©ç”¨LockSupportè¿™ä¸ªè¾…åŠ©ç±»æ¥é˜»å¡å½“å‰çº¿ç¨‹
+         //ÀûÓÃLockSupportÕâ¸ö¸¨ÖúÀàÀ´×èÈûµ±Ç°Ïß³Ì
         LockSupport.park(this);
         return Thread.interrupted();
     }
 ```
-**å½“è¿™é‡Œæˆ‘ä»¬å·²ç»åˆ†æå®Œäº†ï¼Œçº¿ç¨‹åœ¨æˆåŠŸç«äº‰åˆ°é”çš„æƒ…å†µå’Œç«äº‰é”å¤±è´¥ä»¥åæ‰€æ‰§è¡Œçš„æ“ä½œã€‚çº¿ç¨‹åœ¨ç«äº‰é”å¤±è´¥ä»¥åï¼Œä¼šä»¥NodeèŠ‚ç‚¹çš„å½¢å¼å°¾æ’å…¥åˆ°åŒæ­¥é˜Ÿåˆ—ä¸­ï¼Œåœ¨åŒæ­¥é˜Ÿåˆ—ä¸­åªæœ‰å‰ç»§èŠ‚ç‚¹æ˜¯headçš„NodeèŠ‚ç‚¹æ‰æœ‰æœºä¼šå°è¯•ç«äº‰é”ï¼Œå…¶ä»–èŠ‚ç‚¹åœ¨è®¾ç½®å‰ç»§èŠ‚ç‚¹ä¸ºSIGNALåéƒ½å°†è¿›å…¥é˜»å¡çŠ¶æ€ã€‚**
+**µ±ÕâÀïÎÒÃÇÒÑ¾­·ÖÎöÍêÁË£¬Ïß³ÌÔÚ³É¹¦¾ºÕùµ½ËøµÄÇé¿öºÍ¾ºÕùËøÊ§°ÜÒÔºóËùÖ´ĞĞµÄ²Ù×÷¡£Ïß³ÌÔÚ¾ºÕùËøÊ§°ÜÒÔºó£¬»áÒÔNode½ÚµãµÄĞÎÊ½Î²²åÈëµ½Í¬²½¶ÓÁĞÖĞ£¬ÔÚÍ¬²½¶ÓÁĞÖĞÖ»ÓĞÇ°¼Ì½ÚµãÊÇheadµÄNode½Úµã²ÅÓĞ»ú»á³¢ÊÔ¾ºÕùËø£¬ÆäËû½ÚµãÔÚÉèÖÃÇ°¼Ì½ÚµãÎªSIGNALºó¶¼½«½øÈë×èÈû×´Ì¬¡£**
 
 -------------------
 ### UnLock()
 
- - unlock()è°ƒç”¨äº†AQSä¸­çš„æ¨¡æ¿æ–¹æ³•release()
+ - unlock()µ÷ÓÃÁËAQSÖĞµÄÄ£°å·½·¨release()
    
 ```
     public final boolean release(int arg) {
-          //tryReleaseä¸ºAQSæä¾›ç»™å­ç±»è¿›è¡Œé‡å†™çš„æ–¹æ³•
+          //tryReleaseÎªAQSÌá¹©¸ø×ÓÀà½øĞĞÖØĞ´µÄ·½·¨
         if (tryRelease(arg)) {
             Node h = head;
-            //åˆ¤æ–­headçš„å€¼å’ŒwaitStatus
+            //ÅĞ¶ÏheadµÄÖµºÍwaitStatus
             if (h != null && h.waitStatus != 0)
-                //å”¤é†’å¤´èŠ‚ç‚¹çš„åç»§èŠ‚ç‚¹
+                //»½ĞÑÍ·½ÚµãµÄºó¼Ì½Úµã
                 unparkSuccessor(h);
             return true;
         }
@@ -245,9 +245,9 @@ private final boolean parkAndCheckInterrupt() {
     }
 
 
-       //ReentranLockä¸­unfairSyncçš„tryRelease()
+       //ReentranLockÖĞunfairSyncµÄtryRelease()
      protected final boolean tryRelease(int releases) {
-            //é€šè¿‡å°†stateçš„å€¼ç½®ä¸º0ï¼Œè¡¨ç¤ºé‡Šæ”¾äº†é”
+            //Í¨¹ı½«stateµÄÖµÖÃÎª0£¬±íÊ¾ÊÍ·ÅÁËËø
             int c = getState() - releases;
             if (Thread.currentThread() != getExclusiveOwnerThread())
                 throw new IllegalMonitorStateException();
@@ -267,39 +267,39 @@ private final boolean parkAndCheckInterrupt() {
      
         int ws = node.waitStatus;
         if (ws < 0)
-        //å°†å¤´èŠ‚ç‚¹çš„waitStatusæ›´æ–°ä¸º0
+        //½«Í·½ÚµãµÄwaitStatus¸üĞÂÎª0
             compareAndSetWaitStatus(node, ws, 0);
             
         Node s = node.next;
-         //å¦‚æœheadçš„åç»§èŠ‚ç‚¹ä¸ºnullï¼Œæˆ–è€…å·²ç»è¢«å–æ¶ˆäº†
+         //Èç¹ûheadµÄºó¼Ì½ÚµãÎªnull£¬»òÕßÒÑ¾­±»È¡ÏûÁË
         if (s == null || s.waitStatus > 0) {
             s = null;
-            //é‡‡ç”¨ä»é˜Ÿåˆ—å°¾å¼€å§‹å‘å‰éå†ï¼Œå¯»æ‰¾ä¸€ä¸ªwaitStatus<0çš„èŠ‚ç‚¹
+            //²ÉÓÃ´Ó¶ÓÁĞÎ²¿ªÊ¼ÏòÇ°±éÀú£¬Ñ°ÕÒÒ»¸öwaitStatus<0µÄ½Úµã
             for (Node t = tail; t != null && t != node; t = t.prev)          
                 if (t.waitStatus <= 0)
                     s = t;
         }
         if (s != null)
-            //å”¤é†’æŒ‡å®šèŠ‚ç‚¹
+            //»½ĞÑÖ¸¶¨½Úµã
             LockSupport.unpark(s.thread);
     }
 ```
      
- - **é˜»å¡èŠ‚ç‚¹è¢«å”¤é†’å**
+ - **×èÈû½Úµã±»»½ĞÑºó**
  
 
 ```
  private final boolean parkAndCheckInterrupt() {
         LockSupport.park(this);
-        //é˜»å¡èŠ‚ç‚¹è¢«å”¤é†’åï¼Œé¦–å…ˆä¼šåˆ¤æ–­åœ¨é˜»å¡è¿‡ç¨‹ä¸­æ˜¯å¦è¢«ä¸­æ–­è¿‡
+        //×èÈû½Úµã±»»½ĞÑºó£¬Ê×ÏÈ»áÅĞ¶ÏÔÚ×èÈû¹ı³ÌÖĞÊÇ·ñ±»ÖĞ¶Ï¹ı
         return Thread.interrupted();
     }
 
-                //å†æ¬¡å°è¯•è·å–é”
+                //ÔÙ´Î³¢ÊÔ»ñÈ¡Ëø
                 for (;;) {
                 final Node p = node.predecessor();
                 if (p == head && tryAcquire(arg)) {
-                    //è·å–æˆåŠŸï¼Œå°†å½“å‰èŠ‚ç‚¹è®¾ç½®ä¸ºå¤´èŠ‚ç‚¹
+                    //»ñÈ¡³É¹¦£¬½«µ±Ç°½ÚµãÉèÖÃÎªÍ·½Úµã
                     setHead(node);
                     p.next = null; // help GC
                     failed = false;
@@ -310,7 +310,7 @@ private final boolean parkAndCheckInterrupt() {
                     interrupted = true;
             }
 ```
-**åˆ°è¿™é‡ŒReentranLockçš„lockå’Œunlockçš„æ•´ä½“è¿‡ç¨‹å·²ç»åˆ†æå®Œäº†ï¼Œä¸è¿‡è¿˜å­˜åœ¨å¾ˆå¤šç»†èŠ‚æ²¡æœ‰é¡¾åŠåˆ°ï¼Œæ¯”å¦‚å¯¹ä¸­æ–­çš„å¤„ç†ç­‰ã€‚**
+**µ½ÕâÀïReentranLockµÄlockºÍunlockµÄÕûÌå¹ı³ÌÒÑ¾­·ÖÎöÍêÁË£¬²»¹ı»¹´æÔÚºÜ¶àÏ¸½ÚÃ»ÓĞ¹Ë¼°µ½£¬±ÈÈç¶ÔÖĞ¶ÏµÄ´¦ÀíµÈ¡£**
 
 -------------------
      
