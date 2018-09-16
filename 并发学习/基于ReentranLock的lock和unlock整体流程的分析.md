@@ -6,7 +6,7 @@
 - **对UnLock()的分析**
 
 -------------------
-####AbstractQueuedSynchronizer的整体分析
+#### AbstractQueuedSynchronizer的整体分析
 
  1. AQS内部含有一个Node类，正是由这个Node构成了同步队列，官方注释对同步队列的形象描述。    +------+  prev
     +-----+       +-----+  head |      | <---- |     | <---- |     |  tail    +------+       +-----+       +-----+
