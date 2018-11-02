@@ -77,7 +77,7 @@ static final int tableSizeFor(int cap) {
 //返回了离初始容量最近的2^n的数
 ```
 
-![](https://github.com/Jason194113/DailyCoding/blob/master/Screenshots/V%60R%5DVI4%7D%24L%7BNNI7U6OG(YKO.png)
+![](https://github.com/Jason194113/DailyCoding/blob/master/Screenshots/TIM%E5%9B%BE%E7%89%8720181102201739.png)
 
 可以看到HashMap的构造函数只初始化了loadFactor和threshold，并没有对桶数组进行初始化。
 
